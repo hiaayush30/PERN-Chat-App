@@ -129,11 +129,10 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
 
 export const getMe = async (req:Request,res:Response):Promise<any>=>{
     try {
-        // const user = await client.user.findUnique({
-        //     where:{
-        //         id:req.user.id
-        //     }
-        // })
+        return res.json({
+            message:'user fetched successfully!',
+            user:req.user
+        })
     } catch (error) {
         console.log('error in getMe ' + error);
         return res.status(500).json({
