@@ -21,38 +21,31 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
 
         let conversation = await client.conversation.findFirst({
             where: {
-                AND: [
-                    {
-                        participants: {
-                            some: { userId: req.user.id }  // Must contain sender
-                        }
-                    },
-                    {
-                        participants: {
-                            some: { userId: Number(recieverId) }  // Must contain receiver
-                        }
-                    }
-                ]
-            }
-        });
-        
-        if (!conversation) {
-            const newConversation = await client.conversation.create({
-                data:{
-                    participants:{
-                        createMany:{
-                            data:[
-                                {
-                                    userId:req.user.id
-                                },
-                                {
-                                    userId:Number(recieverId)
-                                }
-                            ]
+                participants: {
+                    every: {
+                        id: {
+                            in: [req.user.id, Number(recieverId)]
                         }
                     }
                 }
+            },
+            include: {
+                // participants: true  //poulate conversations of the users
+            }
+        });
+
+        if (!conversation) {
+            const newConversation = await client.conversation.create({
+                data: {
+                    participants: {
+                        connect: [
+                            { id: req.user.id },
+                            { id: Number(recieverId) }
+                        ]
+                    }
+                }
             });
+            // connect: [{ id: senderId }, { id: receiverId }] ensures both users are linked as participants.
 
             const message = await client.message.create({
                 data: {
@@ -68,18 +61,6 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
                     content,
                     conversationId: conversation.id,
                     senderId: req.user.id,
-                }
-            })
-            await client.conversation.update({
-                where:{
-                    id:conversation.id
-                },
-                data:{
-                    messages:{
-                        connect:{
-                            id:message.id
-                        }
-                    }
                 }
             })
             //socket io goes here
@@ -100,13 +81,20 @@ export const getMessages = async (req: Request, res: Response): Promise<any> => 
         // Find the conversation where BOTH req.user.id and recieverId exist
         const conversation = await client.conversation.findFirst({
             where: {
-                AND: [
-                    { participants: { some: { userId: req.user.id } } },  // User is in this conversation
-                    { participants: { some: { userId: Number(recieverId) } } } // Receiver is in this conversation
+                AND:[  //same participants array should have both ids
+                    {participants:{
+                        some:{
+                            id:req.user.id
+                        }
+                    }},
+                    {participants:{
+                        some:{
+                            id:Number(recieverId)
+                        }
+                    }}
                 ]
             }
         });
-        
 
         if (!conversation) {
             return res.status(403).json({
@@ -134,25 +122,23 @@ export const getMessages = async (req: Request, res: Response): Promise<any> => 
 };
 
 
-export const getConversations = async (req:Request,res:Response):Promise<any>=>{
+export const getConversations = async (req: Request, res: Response): Promise<any> => {
     try {
         //get only the users who you are talking with
         const users = await client.user.findMany({
-            where:{
-                conversations:{
-                    some:{
-                        conversation:{
-                            participants:{
-                                some:{
-                                    userId:req.user.id
-                                }
+            where: {
+                id: {
+                    not: req.user.id
+                },
+                conversations: {
+                    some: {
+                        participants: {
+                            some: {
+                                id: req.user.id
                             }
                         }
                     }
                 },
-                id:{
-                    not:req.user.id
-                }
             },
             select: {
                 id: true,
@@ -160,6 +146,7 @@ export const getConversations = async (req:Request,res:Response):Promise<any>=>{
                 profilePic: true,
                 fullname: true,
                 gender: true,
+                conversations: true
             }
         })
         return res.status(200).json(users);
@@ -171,20 +158,20 @@ export const getConversations = async (req:Request,res:Response):Promise<any>=>{
     }
 }
 
-export const getAllUsers = async (req:Request,res:Response):Promise<any>=>{
+export const getAllUsers = async (req: Request, res: Response): Promise<any> => {
     try {
         const users = await client.user.findMany({
-            where:{
-               id:{
-                not:req.user.id
-               }
+            where: {
+                id: {
+                    not: req.user.id
+                }
             },
-            select:{
-                id:true,
-                profilePic:true,
-                fullname:true,
-                username:true,
-                gender:true,
+            select: {
+                id: true,
+                profilePic: true,
+                fullname: true,
+                username: true,
+                gender: true,
             }
         })
         return res.status(200).json(users);
