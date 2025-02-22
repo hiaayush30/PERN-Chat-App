@@ -105,36 +105,46 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
     }
 }
 
-export const getMessages = async (req:Request,res:Response):Promise<any>=>{
+export const getMessages = async (req: Request, res: Response): Promise<any> => {
     try {
-        const {id} = req.params;
-        const conversation = await client.userConversation.findFirst({
-            where:{
-                userId:req.user.id,
-                conversationId:Number(id)
+        const { id: recieverId } = req.params;
+
+        // Find the conversation where BOTH req.user.id and recieverId exist
+        const conversation = await client.conversation.findFirst({
+            where: {
+                AND: [
+                    { participants: { some: { userId: req.user.id } } },  // User is in this conversation
+                    { participants: { some: { userId: Number(recieverId) } } } // Receiver is in this conversation
+                ]
             }
-        })
-        if(!conversation){
+        });
+        
+
+        if (!conversation) {
             return res.status(403).json({
-                message:'conversation not found'
-            })
+                message: 'Conversation not found'
+            });
         }
+
+        // Get messages using the correct conversationId
         const messages = await client.message.findMany({
-            where:{
-                conversationId:Number(id)
+            where: {
+                conversationId: conversation.id  // Use found conversation's ID
             },
-            orderBy:{
-                createdAt:'asc'
+            orderBy: {
+                createdAt: 'asc'
             }
-        })
-        return res.status(200).json(messages)
+        });
+
+        return res.status(200).json(messages);
     } catch (error) {
-        console.log('error in getting messages ' + error);
+        console.log('Error in getting messages: ' + error);
         return res.status(500).json({
             message: 'Internal server error'
-        })
+        });
     }
-}
+};
+
 
 export const getConversations = async (req:Request,res:Response):Promise<any>=>{
     try {
