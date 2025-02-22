@@ -23,7 +23,7 @@ model User {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  converstationIds Int[]  //ids of the conversations a user has
+  conversationIds Int[]  //ids of the conversations a user has
 
   messages      Message[]  
   conversations Conversation[]

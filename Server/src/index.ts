@@ -5,6 +5,7 @@ import cors from 'cors';
 import authRouter from './Routes/auth.route';
 import messageRouter from './Routes/message.route';
 import cookieParser from 'cookie-parser';
+import { authMiddleware } from './middleware/auth.middleware';
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth",authRouter);
-app.use("/api/messages",messageRouter);
+app.use("/api/message",authMiddleware,messageRouter);
 
 app.listen(process.env.PORT,()=>{
     console.log('server running on port '+ process.env.PORT);

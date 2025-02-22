@@ -9,12 +9,13 @@ interface DecodedToken extends JwtPayload {
 
 declare module "express-serve-static-core" {
     interface Request {
-        user?: {
+        user: {
             username: string;
             id: number;
             fullname: string | null;
             profilePic: string | null;
             gender: string | null;
+            conversationIds:Array<number>
         }
     }
 }
@@ -40,7 +41,8 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
                 profilePic: true,
                 id: true,
                 fullname: true,
-                gender: true
+                gender: true,
+                conversationIds:true
             }
         })
         if (!user) {
