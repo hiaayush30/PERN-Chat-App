@@ -80,11 +80,11 @@ export const getMessages = async (req: Request, res: Response): Promise<any> => 
 
         // Find the conversation where BOTH req.user.id and recieverId exist
         const conversation = await client.conversation.findFirst({
-            where: {
-                AND:[  //same participants array should have both ids
+            where: {  // ie for each conversation
+                AND:[  // participants array should have both ids
                     {participants:{
                         some:{
-                            id:req.user.id
+                            id:req.user.id 
                         }
                     }},
                     {participants:{
