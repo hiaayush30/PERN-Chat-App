@@ -61,18 +61,6 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
                     senderId: req.user.id,
                 }
             })
-            await client.conversation.update({
-                where:{
-                    id:newConversation.id
-                },
-                data:{
-                    messages:{
-                        connect:{
-                            id:message.id
-                        }
-                    }
-                }
-            })
             return res.status(201).json(message)
         } else {
             const message = await client.message.create({
