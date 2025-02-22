@@ -23,10 +23,8 @@ model User {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  conversationIds Int[]  //ids of the conversations a user has
-
   messages      Message[]  
-  conversations Conversation[]
+  conversations UserConversation[]
 }
 
 enum Gender {
@@ -39,10 +37,17 @@ model Conversation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  participantIds Int[] //ids of the users of this conversation
-
-  participants User[]     //conversation will have multiple users
+  participants UserConversation[]     
   messages     Message[]  //conversation will have multiple messages
+}
+
+//creating a join table
+model UserConversation {
+  userId Int
+  user User @relation(fields: [userId],references: [id])
+  conversationId Int
+  conversation Conversation @relation(fields: [conversationId],references: [id])
+  @@id([userId,conversationId])
 }
 
 model Message {

@@ -15,7 +15,6 @@ declare module "express-serve-static-core" {
             fullname: string | null;
             profilePic: string | null;
             gender: string | null;
-            conversationIds:Array<number>
         }
     }
 }
@@ -42,7 +41,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
                 id: true,
                 fullname: true,
                 gender: true,
-                conversationIds:true
             }
         })
         if (!user) {

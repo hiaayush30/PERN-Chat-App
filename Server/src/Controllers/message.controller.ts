@@ -21,31 +21,38 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
 
         let conversation = await client.conversation.findFirst({
             where: {
-                participantIds: {
-                    hasEvery: [req.user.id, Number(recieverId)]
-                }
+                AND: [
+                    {
+                        participants: {
+                            some: { userId: req.user.id }  // Must contain sender
+                        }
+                    },
+                    {
+                        participants: {
+                            some: { userId: Number(recieverId) }  // Must contain receiver
+                        }
+                    }
+                ]
             }
-        })
+        });
+        
         if (!conversation) {
             const newConversation = await client.conversation.create({
-                data: {
-                    participantIds: [req.user.id, Number(recieverId)],
+                data:{
+                    participants:{
+                        createMany:{
+                            data:[
+                                {
+                                    userId:req.user.id
+                                },
+                                {
+                                    userId:Number(recieverId)
+                                }
+                            ]
+                        }
+                    }
                 }
             });
-           
-            //add the new conversation id for both users
-            await client.user.updateMany({
-                where:{
-                    id:{
-                        in:[req.user.id,Number(recieverId)]
-                    }
-                },
-                data:{
-                    conversationIds:{
-                        push:newConversation.id
-                    }
-                }
-            })
 
             const message = await client.message.create({
                 data: {
@@ -101,18 +108,10 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
 export const getMessages = async (req:Request,res:Response):Promise<any>=>{
     try {
         const {id} = req.params;
-        const conversation = await client.conversation.findFirst({
+        const conversation = await client.userConversation.findFirst({
             where:{
-                participantIds:{
-                    hasEvery:[req.user.id,Number(id)]
-                }
-            },
-            include:{
-                messages:{
-                    orderBy:{
-                        createdAt:'asc'
-                    }
-                }
+                userId:req.user.id,
+                conversationId:Number(id)
             }
         })
         if(!conversation){
@@ -120,7 +119,15 @@ export const getMessages = async (req:Request,res:Response):Promise<any>=>{
                 message:'conversation not found'
             })
         }
-        return res.status(200).json(conversation.messages)
+        const messages = await client.message.findMany({
+            where:{
+                conversationId:Number(id)
+            },
+            orderBy:{
+                createdAt:'asc'
+            }
+        })
+        return res.status(200).json(messages)
     } catch (error) {
         console.log('error in getting messages ' + error);
         return res.status(500).json({
@@ -134,8 +141,16 @@ export const getConversations = async (req:Request,res:Response):Promise<any>=>{
         //get only the users who you are talking with
         const users = await client.user.findMany({
             where:{
-                conversationIds:{
-                    hasSome:req.user?.conversationIds ? req.user.conversationIds : []
+                conversations:{
+                    some:{
+                        conversation:{
+                            participants:{
+                                some:{
+                                    userId:req.user.id
+                                }
+                            }
+                        }
+                    }
                 },
                 id:{
                     not:req.user.id
@@ -171,7 +186,7 @@ export const getAllUsers = async (req:Request,res:Response):Promise<any>=>{
                 profilePic:true,
                 fullname:true,
                 username:true,
-                gender:true
+                gender:true,
             }
         })
         return res.status(200).json(users);
