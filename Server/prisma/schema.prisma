@@ -33,6 +33,7 @@ model User {
   conversations Conversation[]
 }
 
+
 model Conversation {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())

@@ -77,7 +77,7 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
 export const getMessages = async (req: Request, res: Response): Promise<any> => {
     try {
         const { id: recieverId } = req.params;
-
+ 
         // Find the conversation where BOTH req.user.id and recieverId exist
         const conversation = await client.conversation.findFirst({
             where: {  // ie for each conversation
