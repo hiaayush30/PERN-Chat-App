@@ -4,6 +4,7 @@ import Layout from './Layout';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import { useAuthContext } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   const authContext = useAuthContext();
@@ -14,7 +15,7 @@ const App = () => {
         <Routes>
           <Route path='/signup' element={<Signup />} />
           <Route path='/login' element={<Login />} />
-          <Route path='*' element={<Navigate to={'/signup'} replace/>} />
+          <Route path='*' element={<Navigate to={'/login'} replace/>} />
         </Routes>}
 
       {authContext.authUser &&
@@ -23,7 +24,9 @@ const App = () => {
             <Route index element={<Navigate to={'home'} replace={true} />} />
             <Route path='home' element={<Home />} />
           </Route>
+          <Route path='*' element={<Navigate to={'/home'} replace/>}/>
         </Routes>}
+        <ToastContainer/>
     </BrowserRouter>
   )
 }

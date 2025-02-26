@@ -1,8 +1,22 @@
 import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import {toast} from 'react-toastify';
+import { useAuthContext } from "../../context/AuthContext";
 
 const LogoutButton = () => {
-	const logout = () => {
-		alert("You are logged out");
+	const {setAuthUser} = useAuthContext();
+	const navigate = useNavigate();
+	const logout = async () => {
+		const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/auth/logout', {
+			credentials: 'include',
+			method: 'POST'
+		})
+		if (res.ok) {
+			toast.info('Logged out successfully!')
+			setAuthUser(null);
+		} else {
+			toast.error('Something went wrong!');
+		}
 	};
 
 	return (

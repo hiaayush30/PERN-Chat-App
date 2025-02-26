@@ -3,7 +3,7 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffe
 interface AuthUserType {
     id: number;
     fullname: string;
-    email: string;
+    username: string;
     profilePic: string;
     gender: "male" | "female";
 }
@@ -31,14 +31,18 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
         setIsLoading(true);
         const fetchUser = async () => {
             try {
-                const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/auth/me');
+                const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/auth/me', {
+                    credentials: 'include'
+                    // ensures that cookies, authorization headers, and TLS client certificates are
+                    // sent along with the request—even for cross-origin requests.
+                });
                 const data = await res.json()
-                if (!res.ok) {
-                    return alert(data.message)
-                }
-            } catch (error) { 
+                if (res.ok) {
+                    setAuthUser(authUser => data.user);
+                } else return;
+            } catch (error) {
                 console.log(error);
-            }finally{
+            } finally {
                 setIsLoading(false)
             }
         }

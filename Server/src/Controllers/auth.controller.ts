@@ -35,19 +35,21 @@ export const login = async (req: Request, res: Response): Promise<any> => {
             })
         }
         const token = generateToken({ username, id: user.id });
-        res.cookie("token","Bearer "+token,{
-            sameSite:'strict',
-            httpOnly:true,
-            secure:process.env.NODE_ENV !== "development",
+        res.cookie("token", "Bearer " + token, {
+            sameSite: 'lax',
+            // ✅ Cookies are sent with same-origin and GET requests.
+            // ❌ Cookies are NOT sent with cross-origin POST requests.
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
             maxAge: 15 * 24 * 60 * 60 * 1000
         });
         // res.setHeader('Authorization', "Bearer "+token);
         return res.status(200).json({
             message: "logged in successfully",
-            fullname:user.fullname,
-            id:user.id,
-            profilePic:user.profilePic,
-            gender:user.gender
+            fullname: user.fullname,
+            id: user.id,
+            profilePic: user.profilePic,
+            gender: user.gender
         })
     } catch (error) {
         console.log('error in login ' + error);
@@ -60,9 +62,14 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 const signupSchema = zod.object({
     username: zod.string().min(4, { message: "username should atleast be of 4 characters" }),
     password: zod.string().min(4, { message: "password should atleast be of 4 characters" }),
+    confirmPassword: zod.string().min(4, { message: "password should atleast be of 4 characters" }),
     fullname: zod.string({ message: "fullname required" }),
     gender: zod.enum(["male", "female", "others"], { message: "gender required or invalid" })
+}).refine(data => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"]
 })
+
 export const signup = async (req: Request, res: Response): Promise<any> => {
     try {
         const parsed = signupSchema.safeParse(req.body);
@@ -97,19 +104,20 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
         })
         const token = generateToken({ username: user.username, id: user.id });
 
-        res.cookie("token","Bearer "+token,{
-            sameSite:'strict',
-            httpOnly:true,
-            secure:process.env.NODE_ENV !== "development",
-            maxAge: 15 * 24 * 60 * 60 * 1000
+        res.cookie("token", "Bearer " + token, {
+            sameSite: 'lax',
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            maxAge: 15 * 24 * 60 * 60 * 1000,
         });
         // res.setHeader('Authorization','Bearer '+token);
         return res.status(201).json({
             message: 'signed up succesfully',
-            fullname:user.fullname,
-            id:user.id,
-            profilePic:user.profilePic,
-            gender:user.gender
+            fullname: user.fullname,
+            id: user.id,
+            profilePic: user.profilePic,
+            gender: user.gender,
+            username: user.username
         })
     } catch (error) {
         console.log('error in signup' + error);
@@ -127,11 +135,11 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
     })
 }
 
-export const getMe = async (req:Request,res:Response):Promise<any>=>{
+export const getMe = async (req: Request, res: Response): Promise<any> => {
     try {
         return res.json({
-            message:'user fetched successfully!',
-            user:req.user
+            message: 'user fetched successfully!',
+            user: req.user
         })
     } catch (error) {
         console.log('error in getMe ' + error);

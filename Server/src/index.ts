@@ -9,7 +9,10 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 app.use(cors({
-    origin:process.env.FE_DOMAIN
+    origin:process.env.FE_DOMAIN,
+    credentials:true
+    // allows cookies, authentication headers, and TLS client certificates to be sent between the
+    // frontend and backend in cross-origin requests.
 }))
 app.use(cookieParser());
 app.use(express.json());
