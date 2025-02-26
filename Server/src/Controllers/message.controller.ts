@@ -146,7 +146,7 @@ export const getConversations = async (req: Request, res: Response): Promise<any
                 profilePic: true,
                 fullname: true,
                 gender: true,
-                conversations: true
+                conversations: true,
             }
         })
         return res.status(200).json(users);

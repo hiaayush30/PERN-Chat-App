@@ -31,7 +31,11 @@ const MessageInput = () => {
 				const updatedMessages = [...messages, data];
 				setMessages(updatedMessages);
 				if (!selectedConversation) return;
-				if (currentConversations.some(conversation => conversation.id !== selectedConversation?.id)) {
+				console.log(currentConversations);
+				console.log(selectedConversation);
+				
+				const existingConversation = currentConversations.find(conversation => conversation.id === selectedConversation.id)
+				if (!existingConversation) {
 					setCurrentConversations([{
 						fullname: selectedConversation?.fullname,
 						gender: selectedConversation?.gender,
