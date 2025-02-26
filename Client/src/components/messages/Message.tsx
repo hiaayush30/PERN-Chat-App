@@ -1,9 +1,14 @@
-const Message = ({ message }: { message?: any }) => {
-	const fromMe = message.fromMe;
+import { useAuthContext } from "../../context/AuthContext";
+import useConversation, { MessageType } from "../../zustand/useConversation";
+
+const Message = ({ message }: { message?: MessageType }) => {
+	const { authUser } = useAuthContext();
+	const {selectedConversation} = useConversation();
+	const fromMe = message?.senderId == authUser?.id;
 	const myMessage = fromMe ? "chat-end" : "chat-start";
 	const img = fromMe
-		? "https://avatar.iran.liara.run/public/boy?username=johndoe"
-		: "https://avatar.iran.liara.run/public/boy?username=janedoe";
+		? authUser?.profilePic
+		: selectedConversation?.profilePic;
 
 	const bubbleBg = fromMe ? "bg-blue-500" : "";
 	return (
@@ -13,8 +18,8 @@ const Message = ({ message }: { message?: any }) => {
 					<img alt='Tailwind CSS chat bubble component' src={img} />
 				</div>
 			</div>
-			<p className={`chat-bubble text-white ${bubbleBg} text-sm md:text-md`}>{message.body}</p>
-			<span className='chat-footer opacity-50 text-xs flex gap-1 items-center text-white'>22:59</span>
+			<p className={`chat-bubble text-white ${bubbleBg} text-sm md:text-md`}>{message?.content}</p>
+			<span className='chat-footer opacity-50 text-xs flex gap-1 items-center text-white'>{new Date(message?.createdAt).toLocaleTimeString()}</span>
 		</div>
 	);
 };

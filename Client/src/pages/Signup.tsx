@@ -31,7 +31,7 @@ const SignUp = () => {
     if (inputs.password !== inputs.confirmPassword) {
       return toast.info('Passwords do not match!');
     }
-    signup(inputs);
+    await signup(inputs);
   }
   return (
     <div className='min-h-screen flex flex-col items-center justify-center min-w-96 mx-auto'>

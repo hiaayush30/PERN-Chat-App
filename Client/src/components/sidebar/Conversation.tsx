@@ -1,17 +1,24 @@
-const Conversation = ({ conversation }: { conversation: any }) => {
+import useConversation, { ConversationType } from "../../zustand/useConversation";
+
+const Conversation = ({ conversation }: { conversation:ConversationType}) => {
+	const {setSelectedConversation,selectedConversation} = useConversation();
+	const selected = selectedConversation?.id == conversation.id
+	const handleClick = async () => {
+        setSelectedConversation(conversation);
+	}
 	return (
 		<>
-			<div className='flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer'>
+			<div onClick={handleClick}
+			className={`${selected ? 'bg-sky-500':''} flex gap-2 items-center hover:bg-sky-500 rounded p-2 py-1 cursor-pointer`}>
 				<div className='avatar online'>
 					<div className='w-8 md:w-12 rounded-full'>
 						<img src={conversation.profilePic} alt='user avatar' />
 					</div>
 				</div>
-
 				<div className='flex flex-col flex-1'>
 					<div className='flex gap-3 justify-between'>
-						<p className='font-bold text-gray-200 text-sm md:text-md'>{conversation.fullName}</p>
-						<span className='text-xl hidden md:inline-block'>{conversation.emoji}</span>
+						<p className='font-bold text-gray-200 text-sm md:text-md'>{conversation.fullname}</p>
+						{/* <span className='text-xl hidden md:inline-block'>{conversation.emoji}</span> */}
 					</div>
 				</div>
 			</div>
