@@ -1,5 +1,5 @@
 import { useAuthContext } from "../context/AuthContext"
-import { TbUsersPlus } from "react-icons/tb";
+// import { TbUsersPlus } from "react-icons/tb";
 
 const ProfileOptions = () => {
     const { authUser } = useAuthContext();
@@ -8,10 +8,10 @@ const ProfileOptions = () => {
             <div className="cursor-pointer hover:scale-110 w-12 h-12 rounded-full bg-sky-500">
                 <img src={authUser?.profilePic} alt={authUser?.username} />
             </div>
-            <div title="New Chat"
+            {/* <div title="New Chat"
             className="cursor-pointer bg-sky-500 hover:scale-110 w-12 h-12 rounded-full flex justify-center items-center">
                 <TbUsersPlus size={24} className="text-slate-100" />
-            </div>
+            </div> */}
         </div>
     )
 }

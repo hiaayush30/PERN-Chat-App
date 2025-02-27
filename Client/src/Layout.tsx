@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom'
 
 const Layout = () => {
-  return (
-    <div className='min-h-screen flex items-center justify-center'>
+  return ( 
+    <div className='min-h-screen flex items-center max-sm:items-end max-sm:py-3 justify-center'>
       <Outlet/>
     </div>
   )
