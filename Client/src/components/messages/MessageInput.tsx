@@ -3,14 +3,12 @@ import useConversation from "../../zustand/useConversation";
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import useCurrentConversations from "../../zustand/useCurrentConversations";
-// import { useSocketContext } from "../../context/SocketContext";
 
 const MessageInput = () => {
-	const { selectedConversation, messages, setMessages } = useConversation();
+	const { selectedConversation,addMessage } = useConversation();
 	const { setCurrentConversations, currentConversations } = useCurrentConversations();
 	const [text, setText] = useState('');
 	const [loading, setLoading] = useState(false);
-	// const {onlineUsers,socket} = useSocketContext();
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		if (text.trim().length == 0) {
@@ -30,12 +28,9 @@ const MessageInput = () => {
 			if (!response.ok) {
 				return toast.error('message could not be sent!')
 			} else {
-				const updatedMessages = [...messages, data];
-				setMessages(updatedMessages);
-				if (!selectedConversation) return;
-				console.log(currentConversations);
-				console.log(selectedConversation);
+				addMessage(data);
 				
+				if (!selectedConversation) return;
 				const existingConversation = currentConversations.find(conversation => conversation.id === selectedConversation.id)
 				if (!existingConversation) {
 					setCurrentConversations([{
@@ -44,8 +39,9 @@ const MessageInput = () => {
 						id: selectedConversation?.id,
 						profilePic: selectedConversation?.profilePic,
 						username: selectedConversation?.username
-					},...currentConversations])
+					}, ...currentConversations])
 				}
+				
 			}
 		} catch (error) {
 			console.log(error);

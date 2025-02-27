@@ -22,13 +22,17 @@ interface ConversationState {
     messages: MessageType[];
     setSelectedConversation: (conversation: ConversationType | null) => void;
     setMessages: (messages: MessageType[]) => void
+    addMessage: (newMessage: MessageType) => void
 }
 
 const useConversation = create<ConversationState>((set) => ({
     selectedConversation: null,
-    setSelectedConversation: (conversation) => set({ selectedConversation: conversation }),
-    messages: [],
-    setMessages: (messages) => set({ messages })
-}))
+    setSelectedConversation: (conversation) => set(({ selectedConversation: conversation })),
 
-export default useConversation
+    messages: [],
+    setMessages: (messages) => set({ messages }),
+
+    addMessage: (newMessage) => set((prev) => ({ messages: [...prev.messages, newMessage] }))
+}));
+
+export default useConversation;

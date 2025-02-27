@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import client from "../db/prisma";
+import { getRecieverSocketId, io } from "../socket/socket";
 
 export const sendMessage = async (req: Request, res: Response): Promise<any> => {
     const { id: recieverId } = req.params;
@@ -64,6 +65,10 @@ export const sendMessage = async (req: Request, res: Response): Promise<any> => 
                 }
             })
             //socket io goes here
+            const recieverSocketId = getRecieverSocketId(recieverId);
+            if(recieverId){
+                io.to(recieverSocketId).emit("newMessage",message);
+            }
             return res.status(200).json(message)
         }
     } catch (error) {
