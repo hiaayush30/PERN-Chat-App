@@ -30,6 +30,9 @@ const Messages = () => {
 			{!loading && messages.map((message) => (
 				<Message key={message.id} message={message} />
 			))}
+			{!loading && messages.length==0 && <h2 className="text-center font-semibold my-5">
+				Send a message to start a conversation 💬
+				</h2>}
 			<div ref={scrollRef} className="h-2"></div>
 		</div>
 	);

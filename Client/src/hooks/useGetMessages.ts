@@ -11,7 +11,6 @@ const useGetMessages = () => {
             });
             const data = await res.json();
             if (!res.ok) {
-                toast.error(data.message);
                 return [];
             } else {
                 return data;

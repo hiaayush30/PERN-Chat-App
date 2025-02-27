@@ -38,7 +38,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
                 });
                 const data = await res.json()
                 if (res.ok) {
-                    setAuthUser(authUser => data.user);
+                    setAuthUser(data.user);
                 } else return;
             } catch (error) {
                 console.log(error);

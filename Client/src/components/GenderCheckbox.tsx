@@ -1,7 +1,7 @@
 const GenderCheckbox = ({ handleCheckboxChange, gender }:
 	{
 		handleCheckboxChange: (gender: '' | 'male' | "female") => void,
-		gender: "" | "male" | "female"  //show only the selected gender as checked
+		gender: string  
 	}) => {
 	return (
 		<div className='flex py-2 gap-2'>

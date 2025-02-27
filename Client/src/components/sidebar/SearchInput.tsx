@@ -36,7 +36,7 @@ const SearchInput = () => {
 				onChange={(e) => setSearchText(e.target.value)}
 				type='text'
 				placeholder='Search…'
-				className='input-sm md:input input-bordered rounded-full sm:rounded-full w-full'
+				className='input-sm md:input input-bordered rounded-lg sm:rounded-full w-full'
 			/>
 			<button onClick={()=>{if(isSearching)stopSearch()}}
 				className='btn md:btn-md btn-sm btn-circle bg-sky-500 text-white  '>

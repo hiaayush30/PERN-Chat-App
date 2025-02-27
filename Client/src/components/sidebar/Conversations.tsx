@@ -18,7 +18,7 @@ const Conversations = () => {
 	}, [])
 	if (loading) return <div className="flex justify-center"><Loader /></div>
 	return (
-		<div className='py-2 flex flex-col overflow-auto'>
+		<div className={`${isSearching && 'bg-gray-800 rounded-md'} py-2 flex flex-col overflow-auto`}>
 			{!isSearching && currentConversations.map((conversation) => (
 				<Conversation key={conversation.id} conversation={conversation} />
 			))}

@@ -19,7 +19,7 @@ const Message = ({ message }: { message?: MessageType }) => {
 				</div>
 			</div>
 			<p className={`chat-bubble text-white ${bubbleBg} text-sm md:text-md`}>{message?.content}</p>
-			<span className='chat-footer opacity-50 text-xs flex gap-1 items-center text-white'>{new Date(message?.createdAt).toLocaleTimeString()}</span>
+			<span className='chat-footer opacity-50 text-xs flex gap-1 items-center text-white'>{new Date(message?.createdAt as Date).toLocaleTimeString()}</span>
 		</div>
 	);
 };
