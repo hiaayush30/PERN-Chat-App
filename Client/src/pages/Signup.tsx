@@ -37,8 +37,9 @@ const SignUp = () => {
     <div className='min-h-screen flex flex-col items-center justify-center min-w-96 mx-auto'>
       <div
         className='p-6 rounded-lg shadow-md bg-gray-100/20 backdrop-opacity-80 backdrop-blur-xl'>
-        <h1 className='text-3xl font-semibold text-center text-gray-300'>
-          Sign Up <span className='text-blue-500'> ChatApp</span>
+        <h1 className='text-3xl font-semibold text-center text-gray-100'>
+          Sign Up <span className='text-blue-500 bg-slate-200 rounded-xl p-1 mx-2
+          '> Chatify</span>
         </h1>
 
         <form onSubmit={handleSubmit}>
@@ -89,7 +90,7 @@ const SignUp = () => {
 
           <Link
             to={"/login"}
-            className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block text-white'
+            className='text-sm hover:underline hover:text-sky-300 mt-2 inline-block text-white'
           >
             Already have an account?
           </Link>

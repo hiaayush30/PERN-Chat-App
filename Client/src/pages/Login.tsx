@@ -16,7 +16,8 @@ const Login = () => {
 			<div className='p-6 rounded-lg shadow-md bg-gray-100/20 backdrop-opacity-90 backdrop-blur-xl'>
 				<h1 className='text-3xl font-semibold text-center text-white'>
 					Login
-					<span className='text-blue-500'> ChatApp</span>
+					<span className='text-blue-500 bg-slate-200 rounded-xl p-1 mx-2
+					'>Chatify</span>
 				</h1>
 
 				<form onSubmit={handleSubmit}>
@@ -41,7 +42,7 @@ const Login = () => {
 					</div>
 					<Link
 						to='/signup'
-						className='text-sm  hover:underline text-white hover:text-blue-600 mt-2 inline-block'
+						className='text-sm  hover:underline text-white hover:text-sky-300 mt-2 inline-block'
 					>
 						{"Don't"} have an account?
 					</Link>
