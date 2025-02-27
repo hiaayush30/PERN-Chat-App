@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc -b && node ./dist/index.js",
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "build":"npm install && npx tsc -b && npm run postbuild && prisma generate --schema=./dist/schema.prisma && npm install --prefix ../Client && npm run build --prefix ../Client && cp -r ../Client/dist ./Frontend",
+    "postbuild": "cp  prisma/schema.prisma dist/",
+    "start": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
