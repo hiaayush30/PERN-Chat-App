@@ -24,10 +24,10 @@ app.use("/api/message", messageRouter);
 
 //deployment
 if (process.env.NODE_ENV !== "development") {
-    app.use(express.static(path.join(__dirname,"/Frontend/dist")));
+    app.use(express.static(path.resolve("Frontend/dist")));
     app.get("*",(req,res)=>{
         res.sendFile(
-            path.join(__dirname,"Frontend","dist","index.html")
+            path.resolve("Frontend/dist/index.html")
         )
     })
     console.log = () => { }; // Disable console logs in production
