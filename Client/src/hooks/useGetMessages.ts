@@ -6,7 +6,7 @@ const useGetMessages = () => {
     const getMessages = async (id: number) => {
         try {
             setLoading(true);
-            const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/message/' + id, {
+            const res = await fetch('/api/message/' + id, {
                 credentials: 'include'
             });
             const data = await res.json();

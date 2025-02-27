@@ -18,7 +18,7 @@ const useSignup = () => {
     const signup = async (inputs: SignupInputs) => {
         try {
             setLoading(true);
-            const res = await fetch(import.meta.env.VITE_BE_DOMAIN + "/api/auth/signup", {
+            const res = await fetch("/api/auth/signup", {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

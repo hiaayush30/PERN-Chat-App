@@ -15,7 +15,7 @@ const useLogin = () => {
     const login = async (inputs: LoginInputs) => {
         try {
             setLoading(true);
-            const res = await fetch(import.meta.env.VITE_BE_DOMAIN + "/api/auth/login", {
+            const res = await fetch("/api/auth/login", {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

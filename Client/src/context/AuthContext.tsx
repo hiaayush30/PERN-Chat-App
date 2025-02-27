@@ -31,7 +31,7 @@ export const AuthContextProvider = (props: { children: ReactNode }) => {
         setIsLoading(true);
         const fetchUser = async () => {
             try {
-                const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/auth/me', {
+                const res = await fetch('/api/auth/me', {
                     credentials: 'include'
                     // ensures that cookies, authorization headers, and TLS client certificates are
                     // sent along with the request—even for cross-origin requests.

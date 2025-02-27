@@ -16,7 +16,7 @@ const MessageInput = () => {
 		}
 		setLoading(true);
 		try {
-			const response = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/message/send/' + selectedConversation?.id, {
+			const response = await fetch('/api/message/send/' + selectedConversation?.id, {
 				method: "POST",
 				credentials: 'include',
 				headers: {

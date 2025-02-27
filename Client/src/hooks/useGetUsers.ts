@@ -6,7 +6,7 @@ const useGetUsers = () => {
     const getUsers = async () => {
         try {
             setLoading(true);
-            const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/message/users', {
+            const res = await fetch('/api/message/users', {
                 credentials: 'include'
             });
             const data = await res.json();

@@ -8,12 +8,12 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  // server:{
-  //   proxy:{
-  //     '/api':{  // Intercepts requests starting with `/api`
-  //       target:'http://localhost:3000', // Redirects them to this backend server
-  //       changeOrigin:true
-  //     }
-  //   }
-  // }
+  server:{
+    proxy:{
+      '/api':{  // Intercepts requests starting with `/api`
+        target:'http://localhost:3000', // Redirects them to this backend server
+        changeOrigin:true
+      }
+    }
+  }
 })

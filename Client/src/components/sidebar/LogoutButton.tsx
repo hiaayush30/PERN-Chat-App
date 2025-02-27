@@ -5,7 +5,7 @@ import { useAuthContext } from "../../context/AuthContext";
 const LogoutButton = () => {
 	const {setAuthUser} = useAuthContext();
 	const logout = async () => {
-		const res = await fetch(import.meta.env.VITE_BE_DOMAIN + '/api/auth/logout', {
+		const res = await fetch('/api/auth/logout', {
 			credentials: 'include',
 			method: 'POST'
 		})
