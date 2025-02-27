@@ -7,6 +7,7 @@ export type MessageType = {
     createdAt: Date,
     updatedAt: Date,
     conversationId: number;
+    shouldShake?:boolean
 }
 
 export type ConversationType = {
