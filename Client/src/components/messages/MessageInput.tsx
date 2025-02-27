@@ -3,12 +3,14 @@ import useConversation from "../../zustand/useConversation";
 import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 import useCurrentConversations from "../../zustand/useCurrentConversations";
+// import { useSocketContext } from "../../context/SocketContext";
 
 const MessageInput = () => {
 	const { selectedConversation, messages, setMessages } = useConversation();
 	const { setCurrentConversations, currentConversations } = useCurrentConversations();
 	const [text, setText] = useState('');
 	const [loading, setLoading] = useState(false);
+	// const {onlineUsers,socket} = useSocketContext();
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		if (text.trim().length == 0) {
