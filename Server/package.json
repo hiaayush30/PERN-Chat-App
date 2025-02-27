@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/index.ts",
-    "build":"npm install && npx tsc -b && npm run postbuild && prisma generate --schema=./dist/schema.prisma && npm install --prefix ../Client && npm run build --prefix ../Client && cp -r ../Client/dist ./Frontend",
+    "build":"npm install && npx tsc -b && npm run postbuild && npx prisma generate --schema=./dist/schema.prisma && npm install --prefix ../Client && npm run build --prefix ../Client && cp -r ../Client/dist ./Frontend",
     "postbuild": "cp  prisma/schema.prisma dist/",
     "start": "node ./dist/index.js"
   },
