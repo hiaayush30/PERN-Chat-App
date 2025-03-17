@@ -35,7 +35,7 @@ const SearchInput = () => {
 				value={searchText}
 				onChange={(e) => setSearchText(e.target.value)}
 				type='text'
-				placeholder='Search…'
+				placeholder='New chat '
 				className='input-sm md:input input-bordered rounded-lg sm:rounded-full w-full'
 			/>
 			<button onClick={()=>{if(isSearching)stopSearch()}}

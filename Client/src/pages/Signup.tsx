@@ -25,6 +25,9 @@ const SignUp = () => {
         return toast.info(key + " cannot be empty!");
       }
     }
+    if(inputs.username.trim().length<4){
+      return toast.info('username should atleast have 4 characters')
+    }
     if(inputs.password.trim().length<4){
       return toast.info('Password should atleast have 4 characters')
     }
