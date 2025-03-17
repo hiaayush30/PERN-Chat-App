@@ -17,16 +17,13 @@ const Conversations = () => {
 		fetchConversations();
 	}, [])
 	if (loading) return <div className="flex justify-center"><Loader /></div>
-	if (!loading && currentConversations.length==0) {
-		return (
-			<div className="h-full flex flex-col items-center">
-				<span className="mt-5 text-slate-100">No active conversations!</span>
-			    <span className="text-sm mt-2">Click on New Chat above</span>
-			</div>
-		)
-	}
 	return (
 		<div className={`${isSearching && 'bg-gray-800 rounded-md'} py-2 flex flex-col overflow-auto`}>
+             {!isSearching && !loading && currentConversations.length==0 && <div className="flex flex-col items-center">
+				<span className="mt-5 text-slate-100">No active conversations!</span>
+			    <span className="text-sm mt-2 text-center"
+				>Click on New Chat above to get started</span>
+			</div>}
 			{!isSearching && currentConversations.map((conversation) => (
 				<Conversation key={conversation.id} conversation={conversation} />
 			))}
